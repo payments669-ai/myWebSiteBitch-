@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vodafone Cash - بوابة شحن فودافون كاش</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #121212;
+      --bg-gradient-1: rgba(230, 0, 0, 0.05);
+      --bg-gradient-2: rgba(230, 0, 0, 0.03);
+      --card-bg: rgba(22, 18, 20, 0.88);
+      --card-border: rgba(230, 0, 0, 0.15);
+      --card-shadow: rgba(0, 0, 0, 0.4);
+      --accent: #E60000;
+      --accent-hover: #cc0000;
+      --accent-glow: rgba(230, 0, 0, 0.2);
+      --input-bg: #2b292a;
+      --input-border: #3f3537;
+      --input-focus-bg: #332a2b;
+      --text-primary: #ffffff;
+      --text-secondary: #b0a5a7;
+      --text-muted: #7a6e70;
+      --btn-text: #ffffff;
+      --radius: 20px;
+      --radius-sm: 12px;
+      --font-ar: 'Cairo', sans-serif;
+      --font-en: 'Inter', sans-serif;
+      --topbar-border: rgba(230, 0, 0, 0.15);
+      --topbar-bg: rgba(230, 0, 0, 0.08);
+      --topbar-hover-bg: rgba(230, 0, 0, 0.18);
+    }
+
+    .light {
+      --bg: #f5f0ef;
+      --bg-gradient-1: rgba(230, 0, 0, 0.07);
+      --bg-gradient-2: rgba(230, 0, 0, 0.03);
+      --card-bg: rgba(255, 255, 255, 0.78);
+      --card-border: rgba(230, 0, 0, 0.3);
+      --card-shadow: rgba(0, 0, 0, 0.1);
+      --input-bg: #ffffff;
+      --input-border: #d4c5c3;
+      --input-focus-bg: #ffffff;
+      --text-primary: #1a1a2e;
+      --text-secondary: #6a4f4d;
+      --text-muted: #9a7f7d;
+      --btn-text: #ffffff;
+      --topbar-border: rgba(230, 0, 0, 0.35);
+      --topbar-bg: rgba(230, 0, 0, 0.1);
+      --topbar-hover-bg: rgba(230, 0, 0, 0.2);
+    }
+
+    html { font-size: 16px; }
+
+    body {
+      font-family: var(--font-ar);
+      background: var(--bg);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background-image:
+        radial-gradient(ellipse at 20% 50%, var(--bg-gradient-1) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 50%, var(--bg-gradient-2) 0%, transparent 50%);
+      transition: background 0.4s ease;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 420px;
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 40px 28px 32px;
+      box-shadow:
+        0 8px 32px var(--card-shadow),
+        inset 0 1px 0 rgba(230, 0, 0, 0.06);
+      transition: box-shadow 0.3s ease, background 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0.6;
+    }
+
+    .card:hover {
+      box-shadow:
+        0 12px 48px var(--card-shadow),
+        0 0 40px rgba(230, 0, 0, 0.04),
+        inset 0 1px 0 rgba(230, 0, 0, 0.08);
+    }
+
+    /* ---- Top Bar (Theme + Language) ---- */
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      gap: 8px;
+    }
+
+    .top-bar .group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .top-btn {
+      font-family: var(--font-ar);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: 50px;
+      border: 1px solid var(--topbar-border);
+      background: var(--topbar-bg);
+      color: var(--accent);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      letter-spacing: 0.3px;
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      line-height: 1;
+    }
+
+    .top-btn:hover {
+      background: var(--topbar-hover-bg);
+      border-color: var(--accent);
+      box-shadow: 0 0 20px rgba(230, 0, 0, 0.1);
+    }
+
+    .top-btn .icon {
+      font-size: 1rem;
+      line-height: 1;
+    }
+
+    .theme-btn .icon {
+      display: inline-block;
+      transition: transform 0.3s ease;
+    }
+
+    .theme-btn:hover .icon {
+      transform: rotate(20deg);
+    }
+
+    .lang-btn .divider {
+      opacity: 0.4;
+      margin: 0 3px;
+    }
+
+    /* ---- Header ---- */
+    .header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .header h1 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1.3;
+      margin-bottom: 6px;
+    }
+
+    .header p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      letter-spacing: 0.3px;
+    }
+
+    /* ---- Badge ---- */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--topbar-bg);
+      border: 1px solid var(--topbar-border);
+      border-radius: 50px;
+      padding: 8px 18px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin: 0 auto 28px;
+      width: fit-content;
+      backdrop-filter: blur(10px);
+      direction: ltr;
+    }
+
+    .badge.clickable {
+      cursor: pointer;
+      user-select: all;
+    }
+    .badge .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse-dot 2s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    /* ---- Form ---- */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+      padding-right: 4px;
+      transition: color 0.3s ease;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 14px 18px;
+      font-family: var(--font-ar);
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      background: var(--input-bg);
+      border: 1.5px solid var(--input-border);
+      border-radius: var(--radius-sm);
+      outline: none;
+      transition: all 0.3s ease;
+      direction: rtl;
+    }
+
+    .form-group input::placeholder {
+      color: var(--text-muted);
+      font-weight: 400;
+      opacity: 0.7;
+    }
+
+    .form-group input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow), 0 0 20px rgba(230, 0, 0, 0.06);
+      background: var(--input-focus-bg);
+    }
+
+    .form-group input:-webkit-autofill {
+      -webkit-box-shadow: 0 0 0 1000px var(--input-bg) inset;
+      -webkit-text-fill-color: var(--text-primary);
+      border-color: var(--input-border);
+    }
+
+    /* ---- Button ---- */
+    .submit-btn {
+      width: 100%;
+      padding: 16px;
+      margin-top: 8px;
+      font-family: var(--font-ar);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--btn-text);
+      background: var(--accent);
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      letter-spacing: 0.3px;
+    }
+
+    .submit-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .submit-btn:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(230, 0, 0, 0.3);
+    }
+
+    .submit-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 4px 12px rgba(230, 0, 0, 0.2);
+    }
+
+    /* ---- Message ---- */
+    .msg-box {
+      margin-top: 18px;
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-align: center;
+      display: none;
+      transition: all 0.3s ease;
+    }
+
+    .msg-box.success {
+      display: block;
+      background: rgba(0, 200, 83, 0.12);
+      border: 1px solid rgba(0, 200, 83, 0.25);
+      color: #4ade80;
+    }
+
+    .msg-box.error {
+      display: block;
+      background: rgba(230, 0, 0, 0.12);
+      border: 1px solid rgba(230, 0, 0, 0.25);
+      color: #ff6b6b;
+    }
+
+    .msg-box.info {
+      display: block;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-secondary);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    /* ---- Footer ---- */
+    .footer-text {
+      text-align: center;
+      margin-top: 22px;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      opacity: 0.6;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    /* ---- RTL / LTR toggle helper ---- */
+    .card.ltr { direction: ltr; }
+    .card.ltr .form-group input { direction: ltr; }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 480px) {
+      body { padding: 12px; }
+      .card { padding: 28px 18px 24px; border-radius: 16px; }
+      .header h1 { font-size: 1.35rem; }
+      .badge { font-size: 0.7rem; padding: 6px 14px; }
+      .submit-btn { padding: 14px; font-size: 0.92rem; }
+      .top-btn { padding: 6px 12px; font-size: 0.75rem; }
+    }
+
+    @media (min-width: 768px) {
+      .card { padding: 48px 36px 36px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card" id="appCard">
+    <!-- Top Bar: Theme Toggle + Language Switcher -->
+    <div class="top-bar">
+      <div class="group">
+        <button class="top-btn theme-btn" id="themeToggle">
+          <span class="icon" id="themeIcon">🌙</span>
+        </button>
+      </div>
+      <div class="group">
+        <button class="top-btn lang-btn" id="langToggle">
+          <span class="lang-ar">العربي</span>
+          <span class="divider">/</span>
+          <span class="lang-en">EN</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+      <h1 id="title">فودافون كاش</h1>
+      <p id="subtitle">بوابة الشحن</p>
+    </div>
+
+    <!-- Badge -->
+    <div class="badge clickable" id="badgeCopy" title="اضغط للنسخ">
+      <span class="dot"></span>
+      <span id="badgeText">كاش: 01003095673</span>
+    </div>
+
+    <!-- Form -->
+    <form id="paymentForm">
+      <div class="form-group">
+        <label id="labelOrder">رقم المحول منه</label>
+        <input type="text" id="inputOrder" placeholder="مثلاً: 01041122334" inputmode="numeric" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label id="labelAmount">المبلغ بالجنيه</label>
+        <input type="text" id="inputAmount" placeholder="مثلاً: 50" inputmode="decimal" autocomplete="off">
+      </div>
+      <input type="hidden" id="inputUserId">
+      <button class="submit-btn" id="submitBtn" type="submit">التحقق من الدفع</button>
+      <div class="msg-box" id="msgBox"></div>
+    </form>
+
+    <div class="footer-text">Vodafone Cash &mdash; Recharge Portal</div>
+  </div>
+
+  <script>
+    // ──────────────────────────────────────────────
+    //  🔧 CONFIG — غيّر الرابط ده لرابط السيرفر بتاعك
+    //  لو السيرفر على نفس الجهاز: http://localhost:5163
+    //  لو السيرفر على سيرفر تاني: http://IP_ADDRESS:5163
+    // ──────────────────────────────────────────────
+    const API_BASE_URL = 'http://185.211.103.215:5163';
+    const CHECK_ENDPOINT = `${API_BASE_URL}/check_payment`;
+
+
+    // ──────────────────────────────────────────────
+    //  DOM refs
+    // ──────────────────────────────────────────────
+    const form        = document.getElementById('paymentForm');
+    const amountInp   = document.getElementById('inputAmount');
+    const phoneInp    = document.getElementById('inputOrder');
+    const userIdInp   = document.getElementById('inputUserId');
+    const submitBtn   = document.getElementById('submitBtn');
+    const msgBox      = document.getElementById('msgBox');
+    const badgeCopy   = document.getElementById('badgeCopy');
+
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon   = document.getElementById('themeIcon');
+    const htmlEl      = document.documentElement;
+    let isDark = true;
+
+
+    // ──────────────────────────────────────────────
+    //  قراءة user_id من رابط الموقع (اختياري)
+    //  مثلاً: vodafone.html?user_id=123456789
+    // ──────────────────────────────────────────────
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlUserId = urlParams.get('user_id');
+    if (urlUserId) {
+      userIdInp.value = urlUserId;
+    }
+
+
+    // ──────────────────────────────────────────────
+    //  Theme toggle
+    // ──────────────────────────────────────────────
+    themeToggle.addEventListener('click', () => {
+      isDark = !isDark;
+      htmlEl.classList.toggle('light', !isDark);
+      themeIcon.textContent = isDark ? '🌙' : '☀️';
+    });
+
+
+    // ──────────────────────────────────────────────
+    //  نسخ الرقم عند الضغط على badge (صامت — ما يتغيرش)
+    // ──────────────────────────────────────────────
+    badgeCopy.addEventListener('click', async () => {
+      const number = '01003095673';
+      try {
+        await navigator.clipboard.writeText(number);
+      } catch {
+        const ta = document.createElement('textarea');
+        ta.value = number;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
+    });
+
+
+    // ──────────────────────────────────────────────
+    //  UI helpers
+    // ──────────────────────────────────────────────
+    function showMsg(text, type) {
+      msgBox.textContent = text;
+      msgBox.className = 'msg-box ' + type;
+    }
+
+    function clearMsg() {
+      msgBox.textContent = '';
+      msgBox.className = 'msg-box';
+    }
+
+    function setLoading(loading) {
+      submitBtn.disabled = loading;
+      submitBtn.textContent = loading ? 'جاري التحقق…' : 'التحقق من الدفع';
+    }
+
+
+    // ──────────────────────────────────────────────
+    //  Validation
+    // ──────────────────────────────────────────────
+    function validate(phone, amount) {
+      const PHONE_RE = /^(010|011|012|015)\d{8}$/;
+      if (!PHONE_RE.test(phone)) {
+        return 'رقم الهاتف غير صحيح — يجب أن يكون 11 رقماً يبدأ بـ 010, 011, 012, أو 015';
+      }
+      const amt = parseFloat(amount);
+      if (isNaN(amt) || amt <= 0) {
+        return 'المبلغ غير صحيح — يرجى إدخال رقم صحيح';
+      }
+      if (amt < 50) {
+        return 'المبلغ يجب أن يكون 50 جنيهاً على الأقل';
+      }
+      return null;
+    }
+
+
+    // ──────────────────────────────────────────────
+    //  Submit → check_payment
+    // ──────────────────────────────────────────────
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearMsg();
+
+      const phone  = phoneInp.value.trim();
+      const amount = amountInp.value.trim();
+      const uid    = userIdInp.value.trim();
+
+      const error = validate(phone, amount);
+      if (error) {
+        showMsg(error, 'error');
+        return;
+      }
+
+      const body = {
+        sender_phone: phone,
+        amount:       parseFloat(amount),
+      };
+      if (uid) body.user_id = parseInt(uid, 10);
+
+      setLoading(true);
+      try {
+        const res = await fetch(CHECK_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+
+        const data = await res.json();
+
+        if (res.ok && data.status === 'success') {
+          showMsg(data.message || '✅ تم العثور على الدفعة!', 'success');
+        } else {
+          // السيرفر رد بـ 404 أو 400 — رسالته جاهزة بالعربي
+          showMsg(data.message || '❌ لم يتم العثور على دفعة — حاول مرة أخرى لاحقاً.', 'error');
+        }
+      } catch (err) {
+        showMsg('❌ فشل التحقق من الدفع — حاول مرة أخرى لاحقاً.', 'error');
+      } finally {
+        setLoading(false);
+      }
+    });
+  </script>
+
+</body>
+</html>
