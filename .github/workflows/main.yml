@@ -1,0 +1,31 @@
+name: Unzip API Archive
+
+on:
+  push:
+    branches:
+      - main  # أو اسم الفرع عندك لو مختلف (مثل master)
+
+jobs:
+  unzip:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Unzip archive and cleanup
+        run: |
+          if [ -f "api.zip" ]; then
+            echo "Found api.zip, extracting..."
+            unzip -o api.zip
+            echo "Removing api.zip..."
+            rm api.zip
+            
+            # إعدادات الـ Git لحفظ التغييرات أوتوماتيك
+            git config --global user.name "GitHub Action Bot"
+            git config --global user.email "action@github.com"
+            git add .
+            git commit -m "Auto-unzip api.zip and cleanup"
+            git push
+          else
+            echo "api.zip not found, skipping."
+          fi
