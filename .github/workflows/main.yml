@@ -1,0 +1,24 @@
+name: Unzip API Archive
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  unzip:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Unzip archive and cleanup
+        run: |
+          if [ -f "api.zip" ]; then
+            echo "Found api.zip, extracting..."
+            unzip -o api.zip
+            echo "Removing api.zip..."
+            rm api.zip
+          else
+            echo "api.zip not found, skipping."
+          fi
